@@ -8,3 +8,8 @@
 ## Step 1
 
 - Creación de un nuevo usuario
+
+## Step 2
+
+- Obtener un usuario por id
+- Revision de codigos de error
