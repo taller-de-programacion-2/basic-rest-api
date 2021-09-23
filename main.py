@@ -1,5 +1,5 @@
 import uuid
-
+import requests
 import uvicorn
 from fastapi import FastAPI, status
 from pydantic import EmailStr
@@ -21,25 +21,21 @@ class UserResponse(BaseModel):
     id: str
     username: str
     email: Optional[EmailStr]
+    random: Optional[str]
 
     class Config:
         orm_mode = True
 
 
 class User:
-    def __init__(self, id: str, username: str, email: str = None):
+    def __init__(self, id: str, username: str, email: str = None, random: str = None):
         self.id = id
         self.username = username
         self.email = email
+        self.random = random
 
 
 users = {}
-
-
-@app.get('/users',response_model=List[UserResponse], status_code=status.HTTP_200_OK)
-async def get_users():
-    return [v for k, v in users.items()]
-
 
 def validate_username(username, users):
     for user in users.values():
@@ -48,14 +44,28 @@ def validate_username(username, users):
     return True
 
 
+def get_random():
+    params = {'q': str(uuid.uuid4())}
+    response = requests.get('http://localhost:5001/random', params=params)
+    return response.json()
+
+def create_user(username: str, email: str):
+    user_id = str(uuid.uuid4())
+    random = get_random()
+    new_user = User(id=user_id, username=username, email=email, random=random)
+    users[user_id] = new_user
+    return new_user
+
+@app.get('/users',response_model=List[UserResponse], status_code=status.HTTP_200_OK)
+async def get_users():
+    return [user for user_id, user in users.items()]
+
+
 @app.post('/users', response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def create_users(user_request: UserRequest):
     if not validate_username(user_request.username, users):
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=f'User {user_request.username} already exists',)
-    user_id = str(uuid.uuid4())
-    new_user = User(id=user_id, username=user_request.username, email=user_request.email)
-    users[user_id] = new_user
-    return new_user
+    return create_user(user_request.username, user_request.email)
 
 
 @app.get('/users/{user_id}', response_model=UserResponse, status_code=status.HTTP_200_OK)

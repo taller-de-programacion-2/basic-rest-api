@@ -8,6 +8,7 @@ authors = ["Agustin Rojas <rojasagustin90@gmail.com>"]
 python = "^3.9"
 uvicorn = "^0.15.0"
 pydantic = {extras = ["email"], version = "^1.8.2"}
+requests = "^2.26.0"
 
 [tool.poetry.dev-dependencies]
 fastapi = "^0.68.1"
