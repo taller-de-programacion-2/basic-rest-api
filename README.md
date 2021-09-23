@@ -1,5 +1,45 @@
 # basic-rest-api
 
+## Requerimientos
+
+- Python 3.5+
+- [Poetry](https://python-poetry.org/docs/)
+
+
+## Instalación
+
+- Descargar repositorio
+
+``` bash
+git clone https://github.com/taller-de-programacion-2/basic-rest-api.git
+```
+
+- Instalar dependencias
+
+``` bash
+poetry install
+```
+
+
+## Ejecución
+
+- Activar virtual environment
+
+``` bash
+poetry shell
+```
+
+- Correr el server
+
+``` bash
+python main.py
+```
+
+---
+
+# Steps
+
+
 ## Step 0
 
 - Inicializacion de un servicio web que expone una API REST. Implementado con python, utilizando FastAPI
