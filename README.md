@@ -13,3 +13,8 @@
 
 - Obtener un usuario por id
 - Revision de codigos de error
+
+## Step 3
+
+- Validacion de campos
+- Modificacion de usuario
