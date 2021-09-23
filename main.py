@@ -75,5 +75,13 @@ async def update_users(user_id: str, update_user_request: UpdateUserRequest):
     return user
 
 
+@app.delete('/users/{user_id}', status_code=status.HTTP_202_ACCEPTED)
+async def delete_users(user_id: str):
+    if user_id not in users:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=f'User {user_id} not found',)
+    users.pop(user_id)
+    return
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host='0.0.0.0', port=5000)

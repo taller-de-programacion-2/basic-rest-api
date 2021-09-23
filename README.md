@@ -18,3 +18,7 @@
 
 - Validacion de campos
 - Modificacion de usuario
+
+## Step 4
+
+- Eliminar un usuario
