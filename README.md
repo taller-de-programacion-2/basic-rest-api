@@ -26,3 +26,8 @@
 ## Step 5
 
 - Consumir otra API
+
+## Step 6
+
+- Filtrado por query params
+- Manejo de errores consumiendo otra API

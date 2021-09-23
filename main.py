@@ -46,8 +46,14 @@ def validate_username(username, users):
 
 def get_random():
     params = {'q': str(uuid.uuid4())}
-    response = requests.get('http://localhost:5001/random', params=params)
+    try:
+        response = requests.get('http://localhost:5001/random', params=params)
+        if response.status_code != 200:
+            return None
+    except requests.exceptions.ConnectionError as e:
+        return None
     return response.json()
+
 
 def create_user(username: str, email: str):
     user_id = str(uuid.uuid4())
@@ -57,8 +63,15 @@ def create_user(username: str, email: str):
     return new_user
 
 @app.get('/users',response_model=List[UserResponse], status_code=status.HTTP_200_OK)
-async def get_users():
-    return [user for user_id, user in users.items()]
+async def get_users(email_filter: Optional[str] = None):
+    users_filtered = []
+    for user_id, user in users.items():
+        if email_filter:
+            if email_filter in user.email:
+                users_filtered.append(user)
+        else:
+            users_filtered.append(user)
+    return users_filtered
 
 
 @app.post('/users', response_model=UserResponse, status_code=status.HTTP_201_CREATED)
