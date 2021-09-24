@@ -3,6 +3,7 @@
 ## Requerimientos
 
 - Python 3.5+
+- python3.9-distutils
 - [Poetry](https://python-poetry.org/docs/)
 
 
